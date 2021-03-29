@@ -1,0 +1,22 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout">
+	<Dialog id="createProduct" title="{i18n>createProd.title}" contentWidth="auto" contentHeight="auto">
+		<f:SimpleForm id="prodForm" editable="true" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12"
+			adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
+			singleContainerFullSize="false">
+			<f:content>
+				<Label text="{i18n>createProd.name}"/>
+				<Input value="{name}" required="true"/>
+				<Label text="{i18n>createProd.price}"/>
+				<StepInput value="{price}" required="true" displayValuePrecision="2"/>
+				<Label text="{i18n>createProd.desc}"/>
+				<TextArea rows="4" value="{description}"/>
+			</f:content>
+		</f:SimpleForm>
+		<beginButton>
+			<Button text="{i18n>general.save}" icon="sap-icon://save" type="Accept" press=".onSaveProd"/>
+		</beginButton>
+		<endButton>
+			<Button text="{i18n>general.cancel}" icon="sap-icon://cancel" type="Reject" press=".onCancelProd"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

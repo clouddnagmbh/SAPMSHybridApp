@@ -1,0 +1,26 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout">
+	<Dialog id="createCategory" title="{i18n>createCat.title}" contentWidth="auto" contentHeight="auto">
+		<f:SimpleForm id="catForm" editable="true" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12"
+			adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
+			singleContainerFullSize="false">
+			<f:content>
+				<Label text="{i18n>createCat.parentCat}"/>
+				<ComboBox items="{/ProductCategory}" selectedKey="{parentCategory_ID}">
+					<items>
+						<core:Item key="{ID}" text="{title}"/>
+					</items>
+				</ComboBox>
+				<Label text="{i18n>createCat.catTitle}"/>
+				<Input value="{title}" required="true"/>
+				<Label text="{i18n>createCat.catDesc}"/>
+				<TextArea rows="4" value="{description}"/>
+			</f:content>
+		</f:SimpleForm>
+		<beginButton>
+			<Button text="{i18n>general.save}" icon="sap-icon://save" type="Accept" press=".onSaveCat"/>
+		</beginButton>
+		<endButton>
+			<Button text="{i18n>general.cancel}" icon="sap-icon://cancel" type="Reject" press=".onCancelCat"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,22 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="at.clouddna.sappress.HybridApp.controller.Main"
+	xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page title="{i18n>main.pageTitle}">
+		<content>
+			<!-- v4
+			<List id="prodCatList" items="{ path: '/ProductCategory', parameters: { $count: true, $$updateGroupId : 'prodCat' } }">
+			-->
+			<List id="prodCatList" items="{/ProductCategory}">
+				<headerToolbar>
+					<OverflowToolbar>
+						<Title text="{i18n>main.listTitle}"/>
+						<ToolbarSpacer/>
+						<Button icon="sap-icon://add" text="{i18n>main.createCategory}" press="onCreateCategory" type="Accept"/>
+					</OverflowToolbar>
+				</headerToolbar>
+				<items>
+					<StandardListItem title="{title}" description="{description}" press="onCategoryPressed" type="Navigation"/>
+				</items>
+			</List>
+		</content>
+	</Page>
+</mvc:View>

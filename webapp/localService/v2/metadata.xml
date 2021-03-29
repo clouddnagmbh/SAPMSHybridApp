@@ -1,0 +1,340 @@
+<edmx:Edmx xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"
+	xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData" Version="1.0">
+	<edmx:Reference xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+		<edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+	</edmx:Reference>
+	<edmx:Reference xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx"
+		Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+		<edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+	</edmx:Reference>
+	<edmx:Reference xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+		<edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+	</edmx:Reference>
+	<edmx:DataServices m:DataServiceVersion="2.0">
+		<Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="Service">
+			<EntityContainer Name="EntityContainer" m:IsDefaultEntityContainer="true">
+				<EntitySet Name="Currencies" EntityType="Service.Currencies"/>
+				<EntitySet Name="Currencies_texts" EntityType="Service.Currencies_texts"/>
+				<EntitySet Name="Product" EntityType="Service.Product"/>
+				<EntitySet Name="ProductCategory" EntityType="Service.ProductCategory"/>
+				<EntitySet Name="ProductCategory_texts" EntityType="Service.ProductCategory_texts"/>
+				<EntitySet Name="Product_texts" EntityType="Service.Product_texts"/>
+				<FunctionImport Name="setFavorite" ReturnType="Service.return_Service_setFavorite" m:HttpMethod="GET">
+					<Parameter Name="catId" Type="Edm.String" Mode="In" Nullable="true"/>
+				</FunctionImport>
+				<AssociationSet Name="Currencies_texts_1" Association="Service.Currencies_texts_1">
+					<End Role="Currencies" EntitySet="Currencies"/>
+					<End Role="Currencies_texts" EntitySet="Currencies_texts"/>
+				</AssociationSet>
+				<AssociationSet Name="Currencies_localized" Association="Service.Currencies_localized">
+					<End Role="Currencies" EntitySet="Currencies"/>
+					<End Role="Currencies_texts" EntitySet="Currencies_texts"/>
+				</AssociationSet>
+				<AssociationSet Name="Product_currency" Association="Service.Product_currency">
+					<End Role="Product" EntitySet="Product"/>
+					<End Role="Currencies" EntitySet="Currencies"/>
+				</AssociationSet>
+				<AssociationSet Name="Product_category" Association="Service.Product_category">
+					<End Role="Product" EntitySet="Product"/>
+					<End Role="ProductCategory" EntitySet="ProductCategory"/>
+				</AssociationSet>
+				<AssociationSet Name="Product_texts_1" Association="Service.Product_texts_1">
+					<End Role="Product" EntitySet="Product"/>
+					<End Role="Product_texts" EntitySet="Product_texts"/>
+				</AssociationSet>
+				<AssociationSet Name="Product_localized" Association="Service.Product_localized">
+					<End Role="Product" EntitySet="Product"/>
+					<End Role="Product_texts" EntitySet="Product_texts"/>
+				</AssociationSet>
+				<AssociationSet Name="ProductCategory_parentCategory" Association="Service.ProductCategory_parentCategory">
+					<End Role="ProductCategory" EntitySet="ProductCategory"/>
+					<End Role="ProductCategory1" EntitySet="ProductCategory"/>
+				</AssociationSet>
+				<AssociationSet Name="ProductCategory_texts_1" Association="Service.ProductCategory_texts_1">
+					<End Role="ProductCategory" EntitySet="ProductCategory"/>
+					<End Role="ProductCategory_texts" EntitySet="ProductCategory_texts"/>
+				</AssociationSet>
+				<AssociationSet Name="ProductCategory_localized" Association="Service.ProductCategory_localized">
+					<End Role="ProductCategory" EntitySet="ProductCategory"/>
+					<End Role="ProductCategory_texts" EntitySet="ProductCategory_texts"/>
+				</AssociationSet>
+			</EntityContainer>
+			<EntityType Name="Currencies">
+				<Key>
+					<PropertyRef Name="code"/>
+				</Key>
+				<Property Name="name" Type="Edm.String" MaxLength="255"/>
+				<Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+				<Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+				<Property Name="symbol" Type="Edm.String" MaxLength="5"/>
+				<NavigationProperty Name="texts" Relationship="Service.Currencies_texts_1" FromRole="Currencies" ToRole="Currencies_texts"/>
+				<NavigationProperty Name="localized" Relationship="Service.Currencies_localized" FromRole="Currencies" ToRole="Currencies_texts"/>
+			</EntityType>
+			<EntityType Name="Currencies_texts">
+				<Key>
+					<PropertyRef Name="locale"/>
+					<PropertyRef Name="code"/>
+				</Key>
+				<Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+				<Property Name="name" Type="Edm.String" MaxLength="255"/>
+				<Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+				<Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+			</EntityType>
+			<EntityType Name="Product">
+				<Key>
+					<PropertyRef Name="ID"/>
+				</Key>
+				<Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+				<Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+				<Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+				<Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+				<Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+				<Property Name="name" Type="Edm.String" MaxLength="50"/>
+				<Property Name="description" Type="Edm.String" MaxLength="200"/>
+				<Property Name="price" Type="Edm.Decimal" Scale="2" Precision="9"/>
+				<NavigationProperty Name="currency" Relationship="Service.Product_currency" FromRole="Product" ToRole="Currencies"/>
+				<NavigationProperty Name="category" Relationship="Service.Product_category" FromRole="Product" ToRole="ProductCategory"/>
+				<NavigationProperty Name="texts" Relationship="Service.Product_texts_1" FromRole="Product" ToRole="Product_texts"/>
+				<NavigationProperty Name="localized" Relationship="Service.Product_localized" FromRole="Product" ToRole="Product_texts"/>
+				<Property Name="currency_code" Type="Edm.String" MaxLength="3"/>
+				<Property Name="category_ID" Type="Edm.Guid"/>
+			</EntityType>
+			<EntityType Name="ProductCategory">
+				<Key>
+					<PropertyRef Name="ID"/>
+				</Key>
+				<Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+				<Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+				<Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+				<Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+				<Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+				<Property Name="title" Type="Edm.String" MaxLength="50"/>
+				<Property Name="description" Type="Edm.String" MaxLength="200"/>
+				<Property Name="favorite" Type="Edm.Boolean"/>
+				<NavigationProperty Name="parentCategory" Relationship="Service.ProductCategory_parentCategory" FromRole="ProductCategory"
+					ToRole="ProductCategory1"/>
+				<NavigationProperty Name="products" Relationship="Service.Product_category" FromRole="ProductCategory" ToRole="Product"/>
+				<NavigationProperty Name="texts" Relationship="Service.ProductCategory_texts_1" FromRole="ProductCategory" ToRole="ProductCategory_texts"/>
+				<NavigationProperty Name="localized" Relationship="Service.ProductCategory_localized" FromRole="ProductCategory"
+					ToRole="ProductCategory_texts"/>
+				<Property Name="parentCategory_ID" Type="Edm.Guid"/>
+			</EntityType>
+			<EntityType Name="ProductCategory_texts">
+				<Key>
+					<PropertyRef Name="locale"/>
+					<PropertyRef Name="ID"/>
+				</Key>
+				<Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+				<Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+				<Property Name="title" Type="Edm.String" MaxLength="50"/>
+				<Property Name="description" Type="Edm.String" MaxLength="200"/>
+			</EntityType>
+			<EntityType Name="Product_texts">
+				<Key>
+					<PropertyRef Name="locale"/>
+					<PropertyRef Name="ID"/>
+				</Key>
+				<Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+				<Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+				<Property Name="name" Type="Edm.String" MaxLength="50"/>
+				<Property Name="description" Type="Edm.String" MaxLength="200"/>
+			</EntityType>
+			<ComplexType Name="return_Service_setFavorite"/>
+			<Association Name="Currencies_texts_1">
+				<End Role="Currencies" Type="Service.Currencies" Multiplicity="*"/>
+				<End Role="Currencies_texts" Type="Service.Currencies_texts" Multiplicity="*">
+					<OnDelete Action="Cascade"/>
+				</End>
+			</Association>
+			<Association Name="Currencies_localized">
+				<End Role="Currencies" Type="Service.Currencies" Multiplicity="*"/>
+				<End Role="Currencies_texts" Type="Service.Currencies_texts" Multiplicity="0..1"/>
+				<ReferentialConstraint>
+					<Principal Role="Currencies_texts">
+						<PropertyRef Name="code"/>
+					</Principal>
+					<Dependent Role="Currencies">
+						<PropertyRef Name="code"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="Product_currency">
+				<End Role="Product" Type="Service.Product" Multiplicity="*"/>
+				<End Role="Currencies" Type="Service.Currencies" Multiplicity="0..1"/>
+				<ReferentialConstraint>
+					<Principal Role="Currencies">
+						<PropertyRef Name="code"/>
+					</Principal>
+					<Dependent Role="Product">
+						<PropertyRef Name="currency_code"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="Product_category">
+				<End Role="Product" Type="Service.Product" Multiplicity="*"/>
+				<End Role="ProductCategory" Type="Service.ProductCategory" Multiplicity="0..1"/>
+				<ReferentialConstraint>
+					<Principal Role="ProductCategory">
+						<PropertyRef Name="ID"/>
+					</Principal>
+					<Dependent Role="Product">
+						<PropertyRef Name="category_ID"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="Product_texts_1">
+				<End Role="Product" Type="Service.Product" Multiplicity="*"/>
+				<End Role="Product_texts" Type="Service.Product_texts" Multiplicity="*">
+					<OnDelete Action="Cascade"/>
+				</End>
+			</Association>
+			<Association Name="Product_localized">
+				<End Role="Product" Type="Service.Product" Multiplicity="*"/>
+				<End Role="Product_texts" Type="Service.Product_texts" Multiplicity="0..1"/>
+				<ReferentialConstraint>
+					<Principal Role="Product_texts">
+						<PropertyRef Name="ID"/>
+					</Principal>
+					<Dependent Role="Product">
+						<PropertyRef Name="ID"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="ProductCategory_parentCategory">
+				<End Role="ProductCategory" Type="Service.ProductCategory" Multiplicity="*"/>
+				<End Role="ProductCategory1" Type="Service.ProductCategory" Multiplicity="0..1"/>
+				<ReferentialConstraint>
+					<Principal Role="ProductCategory1">
+						<PropertyRef Name="ID"/>
+					</Principal>
+					<Dependent Role="ProductCategory">
+						<PropertyRef Name="parentCategory_ID"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="ProductCategory_texts_1">
+				<End Role="ProductCategory" Type="Service.ProductCategory" Multiplicity="*"/>
+				<End Role="ProductCategory_texts" Type="Service.ProductCategory_texts" Multiplicity="*">
+					<OnDelete Action="Cascade"/>
+				</End>
+			</Association>
+			<Association Name="ProductCategory_localized">
+				<End Role="ProductCategory" Type="Service.ProductCategory" Multiplicity="*"/>
+				<End Role="ProductCategory_texts" Type="Service.ProductCategory_texts" Multiplicity="0..1"/>
+				<ReferentialConstraint>
+					<Principal Role="ProductCategory_texts">
+						<PropertyRef Name="ID"/>
+					</Principal>
+					<Dependent Role="ProductCategory">
+						<PropertyRef Name="ID"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="Service.Currencies">
+				<Annotation Term="UI.Identification">
+					<Collection>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="name"/>
+						</Record>
+					</Collection>
+				</Annotation>
+			</Annotations>
+			<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="Service.Currencies/name">
+				<Annotation Term="Common.Label" String="Name"/>
+			</Annotations>
+			<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="Service.Currencies/descr">
+				<Annotation Term="Common.Label" String="Beschreibung"/>
+			</Annotations>
+			<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="Service.Currencies/code">
+				<Annotation Term="Common.Label" String="Währungscode"/>
+				<Annotation Term="Common.Text" Path="name"/>
+			</Annotations>
+			<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="Service.Currencies/symbol">
+				<Annotation Term="Common.Label" String="Währungssymbol"/>
+			</Annotations>
+			<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="Service.Currencies_texts/name">
+				<Annotation Term="Common.Label" String="Name"/>
+			</Annotations>
+			<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="Service.Currencies_texts/descr">
+				<Annotation Term="Common.Label" String="Beschreibung"/>
+			</Annotations>
+			<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="Service.Currencies_texts/code">
+				<Annotation Term="Common.Label" String="Währungscode"/>
+				<Annotation Term="Common.Text" Path="name"/>
+			</Annotations>
+			<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="Service.Product/createdAt">
+				<Annotation Term="Common.Label" String="Angelegt am"/>
+				<Annotation Term="Core.Computed" Bool="true"/>
+				<Annotation Term="Core.Immutable" Bool="true"/>
+				<Annotation Term="UI.HiddenFilter" Bool="true"/>
+			</Annotations>
+			<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="Service.Product/createdBy">
+				<Annotation Term="Common.Label" String="Angelegt von"/>
+				<Annotation Term="Core.Computed" Bool="true"/>
+				<Annotation Term="Core.Description" String="Die eindeutige ID eines Benutzers"/>
+				<Annotation Term="Core.Immutable" Bool="true"/>
+				<Annotation Term="UI.HiddenFilter" Bool="true"/>
+			</Annotations>
+			<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="Service.Product/modifiedAt">
+				<Annotation Term="Common.Label" String="Geändert am"/>
+				<Annotation Term="Core.Computed" Bool="true"/>
+				<Annotation Term="UI.HiddenFilter" Bool="true"/>
+			</Annotations>
+			<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="Service.Product/modifiedBy">
+				<Annotation Term="Common.Label" String="Geändert von"/>
+				<Annotation Term="Core.Computed" Bool="true"/>
+				<Annotation Term="Core.Description" String="Die eindeutige ID eines Benutzers"/>
+				<Annotation Term="UI.HiddenFilter" Bool="true"/>
+			</Annotations>
+			<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="Service.Product/currency">
+				<Annotation Term="Common.Label" String="Währung"/>
+				<Annotation Term="Core.Description" String="Währungscode gemäß ISO 4217"/>
+			</Annotations>
+			<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="Service.Product/currency_code">
+				<Annotation Term="Common.Label" String="Währung"/>
+				<Annotation Term="Common.ValueList">
+					<Record Type="Common.ValueListType">
+						<PropertyValue Property="Label" String="Währung"/>
+						<PropertyValue Property="CollectionPath" String="Currencies"/>
+						<PropertyValue Property="Parameters">
+							<Collection>
+								<Record Type="Common.ValueListParameterInOut">
+									<PropertyValue Property="LocalDataProperty" PropertyPath="currency_code"/>
+									<PropertyValue Property="ValueListProperty" String="code"/>
+								</Record>
+								<Record Type="Common.ValueListParameterDisplayOnly">
+									<PropertyValue Property="ValueListProperty" String="name"/>
+								</Record>
+							</Collection>
+						</PropertyValue>
+					</Record>
+				</Annotation>
+				<Annotation Term="Core.Description" String="Währungscode gemäß ISO 4217"/>
+			</Annotations>
+			<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="Service.ProductCategory/createdAt">
+				<Annotation Term="Common.Label" String="Angelegt am"/>
+				<Annotation Term="Core.Computed" Bool="true"/>
+				<Annotation Term="Core.Immutable" Bool="true"/>
+				<Annotation Term="UI.HiddenFilter" Bool="true"/>
+			</Annotations>
+			<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="Service.ProductCategory/createdBy">
+				<Annotation Term="Common.Label" String="Angelegt von"/>
+				<Annotation Term="Core.Computed" Bool="true"/>
+				<Annotation Term="Core.Description" String="Die eindeutige ID eines Benutzers"/>
+				<Annotation Term="Core.Immutable" Bool="true"/>
+				<Annotation Term="UI.HiddenFilter" Bool="true"/>
+			</Annotations>
+			<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="Service.ProductCategory/modifiedAt">
+				<Annotation Term="Common.Label" String="Geändert am"/>
+				<Annotation Term="Core.Computed" Bool="true"/>
+				<Annotation Term="UI.HiddenFilter" Bool="true"/>
+			</Annotations>
+			<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="Service.ProductCategory/modifiedBy">
+				<Annotation Term="Common.Label" String="Geändert von"/>
+				<Annotation Term="Core.Computed" Bool="true"/>
+				<Annotation Term="Core.Description" String="Die eindeutige ID eines Benutzers"/>
+				<Annotation Term="UI.HiddenFilter" Bool="true"/>
+			</Annotations>
+		</Schema>
+	</edmx:DataServices>
+</edmx:Edmx>

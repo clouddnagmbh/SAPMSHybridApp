@@ -1,0 +1,36 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+	controllerName="at.clouddna.sappress.HybridApp.controller.CategoryDetail" xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page title="{i18n>cat.pageTitle}">
+		<customHeader>
+			<OverflowToolbar>
+				<Button type="Back" press="onNavBack"/>
+				<Title text="{i18n>cat.pageTitle}"/>
+				<ToolbarSpacer/>
+				<Button icon="sap-icon://edit" text="{i18n>general.edit}" press="onEditCategory" type="Emphasized"/>
+				<Button icon="sap-icon://delete" text="{i18n>general.delete}" press="onDeleteCategory" type="Reject"/>
+			</OverflowToolbar>
+		</customHeader>
+		<content>
+			<ObjectHeader title="{title}">
+				<ObjectAttribute text="{description}"/>
+			</ObjectHeader>
+			<!-- v4
+			<List id="prodList" items="{path: 'products', parameters: { $count: true, $$updateGroupId : 'prod' }}" mode="Delete"
+				delete="onDeleteProduct">
+				-->
+			<List id="prodList" items="{products}" mode="Delete" delete="onDeleteProduct">
+				<headerToolbar>
+					<OverflowToolbar>
+						<Title text="{i18n>cat.products}"/>
+						<ToolbarSpacer/>
+						<Button icon="sap-icon://add" text="{i18n>cat.createProduct}" press="onCreateProduct" type="Accept"/>
+					</OverflowToolbar>
+				</headerToolbar>
+				<items>
+					<ObjectListItem title="{name}" icon="sap-icon://product" number="{path: 'price', type: 'sap.ui.model.type.Float', formatOptions: {minFractionDigits: 2, maxFractionDigits: 2}}">
+					</ObjectListItem>
+				</items>
+			</List>
+		</content>
+	</Page>
+</mvc:View>
